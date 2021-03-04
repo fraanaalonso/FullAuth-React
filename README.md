@@ -1,5 +1,3 @@
-# Getting Started with Create React App
-
 To run the application, type the following 
 command from the root directory:  ``` docker-compose up -d --build  ```
 
