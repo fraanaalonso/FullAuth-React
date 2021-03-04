@@ -1,16 +1,18 @@
 import React, { useRef, useState } from 'react'
 import {Card, Form, Button, Alert} from 'react-bootstrap'
-import { Link } from 'react-router-dom';
-import {useAuth} from '../contexts/AuthContext';
+import { Link, useHistory } from 'react-router-dom';
+import {useAuth} from '../../contexts/AuthContext';
+import { CenteredContainer } from './CenteredContainer';
 
 
-export const ForgotPassword = () => {
+export const Login = () => {
 
     const emailRef = useRef();
-    const { reset } = useAuth();
+    const passwordRef = useRef();
+    const { login } = useAuth();
     const [error, seterror] = useState('');
     const [loading, setloading] = useState(false);
-    const [message, setmessage] = useState('');
+    const history = useHistory();
 
 
     async function handleSubmit(e) {
@@ -19,28 +21,23 @@ export const ForgotPassword = () => {
         try{
             seterror('');
             setloading(true);
-            await reset(emailRef.current.value);
-            setmessage('El email se ha enviado correctamente. Revisa tu bandeja de entrada')
+            await login(emailRef.current.value, passwordRef.current.value);
+            history.push('/');
         }
         catch{
-            seterror('No se ha podido resetear la contraseña');
+            seterror('No se ha podido iniciar sesión');
         }
         setloading(false);
         
     }
     return (
-        <div>
+        <CenteredContainer>
             <Card>
                 <Card.Body>
-                    <h2 className="text-center mb-4">Password Reset</h2>
+                    <h2 className="text-center mb-4">Log In</h2>
                 
                     {
                         error && <Alert variant="danger">{error}</Alert>
-
-                    }
-
-{
-                        message && <Alert variant="success">{message}</Alert>
 
                     }
                 
@@ -51,14 +48,19 @@ export const ForgotPassword = () => {
                         
                         </Form.Group>
 
+                        <Form.Group id="password">
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control type="password" ref={passwordRef} required />
+                        
+                        </Form.Group>
 
                        
 
-                        <Button disabled={loading} type="submit" className="btn btn-info w-100">Reset</Button>
+                        <Button disabled={loading} type="submit" className="btn btn-info w-100">Iniciar</Button>
                     </Form>
 
                     <div className="w-100 text-center mt-2">
-                        <Link to="/login">Login</Link>
+                        <Link to="/forgot-password">Forgot password?</Link>
                     </div>
                 
                 </Card.Body>
@@ -67,6 +69,6 @@ export const ForgotPassword = () => {
             <div className="w-100 text-center mt-2">
                 Necesitas una cuenta? <Link to="/signup">Registro</Link>
             </div>
-        </div>
+        </CenteredContainer>
     )
 }

@@ -1,39 +1,44 @@
 import React, { useRef, useState } from 'react'
 import {Card, Form, Button, Alert} from 'react-bootstrap'
 import { Link, useHistory } from 'react-router-dom';
-import {useAuth} from '../contexts/AuthContext';
+import {useAuth} from '../../contexts/AuthContext';
+import { CenteredContainer } from './CenteredContainer';
 
 
-export const Login = () => {
+export const SignUp = () => {
 
-    const emailRef = useRef();
-    const passwordRef = useRef();
-    const { login } = useAuth();
-    const [error, seterror] = useState('');
+    const emailRef = useRef()
+    const passwordRef = useRef()
+    const passwordConfirmRef = useRef()
+    const { signUp } = useAuth();
+    const [error, seterror] = useState('')
     const [loading, setloading] = useState(false);
     const history = useHistory();
-
 
     async function handleSubmit(e) {
         e.preventDefault();
 
+        if( passwordRef.current.value !== passwordConfirmRef.current.value){
+            return seterror('Las contraseñas no coinciden');
+        }
+
         try{
             seterror('');
             setloading(true);
-            await login(emailRef.current.value, passwordRef.current.value);
+            await signUp(emailRef.current.value, passwordRef.current.value);
             history.push('/');
         }
         catch{
-            seterror('No se ha podido iniciar sesión');
+            seterror('No se ha podido crear la cuenta');
         }
         setloading(false);
         
     }
     return (
-        <div>
+        <CenteredContainer>
             <Card>
                 <Card.Body>
-                    <h2 className="text-center mb-4">Log In</h2>
+                    <h2 className="text-center mb-4">Registro</h2>
                 
                     {
                         error && <Alert variant="danger">{error}</Alert>
@@ -53,21 +58,21 @@ export const Login = () => {
                         
                         </Form.Group>
 
-                       
+                        <Form.Group id="password-confirm">
+                            <Form.Label>Confirmación Password</Form.Label>
+                            <Form.Control type="password" ref={passwordConfirmRef} required />
+                        
+                        </Form.Group>
 
-                        <Button disabled={loading} type="submit" className="btn btn-info w-100">Iniciar</Button>
+                        <Button disabled={loading} type="submit" className="btn btn-info w-100">Registro</Button>
                     </Form>
-
-                    <div className="w-100 text-center mt-2">
-                        <Link to="/forgot-password">Forgot password?</Link>
-                    </div>
                 
                 </Card.Body>
             </Card>
 
             <div className="w-100 text-center mt-2">
-                Necesitas una cuenta? <Link to="/signup">Registro</Link>
+                Ya tienes cuenta? Indentifícate <Link to="/login">Log In</Link>
             </div>
-        </div>
+        </CenteredContainer>
     )
 }

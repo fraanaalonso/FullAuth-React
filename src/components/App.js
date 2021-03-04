@@ -1,30 +1,23 @@
 import React from 'react'
-import { SignUp } from './SignUp';
+import { SignUp } from './auth/SignUp';
 import { Container } from 'react-bootstrap';
 import { AuthProvider } from '../contexts/AuthContext';
 import { BrowserRouter as Router, Switch, Route} from 'react-router-dom'
-import {DashBoard} from './DashBoard'
-import {Login } from './Login'
+import {Profile} from './auth/Profile'
+import {Login } from './auth/Login'
 import { PrivateRoute } from '../Routes/PrivateRoute'
-import {ForgotPassword} from '../components/ForgotPassword'
-import { UpdateProfile } from './UpdateProfile';
+import {ForgotPassword} from './auth/ForgotPassword'
+import { UpdateProfile } from './auth/UpdateProfile';
+import { CenteredContainer } from './auth/CenteredContainer';
 
 
 function App() {
 
   return (
-
-
-    <Container 
-      className="d-flex align-items-center justify-content-center"
-      style={{minHeight: "100vh"}}
-      
-      >
-          <div className="w-100" style={{minHeight: "400px"}}      >
-          <Router>
+      <Router>
             <AuthProvider>
                 <Switch>
-                    <PrivateRoute exact path="/" component={DashBoard} />
+                    <PrivateRoute exact path="/" component={Profile} />
                     <PrivateRoute  path="/update-Profile" component={UpdateProfile} />
                     <Route path="/signup" component={SignUp}/>
                     <Route path="/login" component={Login}/>
@@ -33,10 +26,9 @@ function App() {
             </AuthProvider>
 
           </Router>
-          </div>
 
-    </Container>
-
+    
+         
 
     
   )
