@@ -1,6 +1,7 @@
 # Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+To run the application, type the following 
+command from the root directory:  ``` docker-compose up -d --build  ```
 
-## To run the application, type the following command from the root directory: 
-``` docker-compose up -d --build  ```
+To view the content, open up Chrome on your 
+device and go to the localhost port: ```` localhost:3001 ```
